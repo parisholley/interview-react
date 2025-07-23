@@ -11,11 +11,9 @@ interface Props {
 }
 
 const DataChart: React.FC<Props> = ({ data }) => {
-  // This effect also contributes to the render issue
   useEffect(() => {
     console.log('Chart effect running - rendering chart');
-    // Chart rendering logic
-  }, [data]); // This is actually correct, but adds to the console noise
+  }, [data]);
 
   return (
     <div>

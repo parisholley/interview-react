@@ -9,7 +9,7 @@ import UserProfile from './components/UserProfile';
 import DataDashboard from './components/DataDashboard';
 import CardLayout from './components/CardLayout';
 import ObserverComponent from './components/ObserverComponent';
-import ComplexComponent from './components/ComplexComponent';
+import DashboardComponent from './components/ComplexComponent';
 import ErrorBoundary from './components/ErrorBoundary';
 
 const App: React.FC = () => {
@@ -41,12 +41,12 @@ const App: React.FC = () => {
                   lastLogin: new Date()
                 }} 
                 onUpdate={() => {}} 
-                onProcessAdmin={() => {}}
+                onProcess={() => {}}
               />} 
             />
             <Route path="challenges/css" element={<CardLayout />} />
             <Route path="challenges/observer" element={<ObserverComponent />} />
-            <Route path="challenges/complex" element={<ComplexComponent />} />
+            <Route path="challenges/complex" element={<DashboardComponent />} />
           </Route>
         </Routes>
       </Router>

@@ -1,9 +1,5 @@
 import React from 'react';
 
-// Challenge: Complex TypeScript compilation errors involving discriminated unions,
-// Pick/Omit utility types, and Extract for union filtering
-
-// Discriminated union types for different user types
 type AdminUser = {
   type: 'admin';
   id: number;
@@ -32,14 +28,10 @@ type GuestUser = {
 
 type User = AdminUser | RegularUser | GuestUser;
 
-// Error 1: Pick from union doesn't work as expected - lacks discriminator
-type UserDisplayInfo = Pick<User, 'name' | 'email' | 'phone'>; // Error: 'phone' doesn't exist, 'email' might not exist
+type DisplayData = Pick<User, 'name' | 'email' | 'phone'>;
+type UpdateData = Omit<User, 'id' | 'createdAt'>;
 
-// Error 2: Omit from union creates issues with discriminated fields
-type UserUpdateData = Omit<User, 'id' | 'createdAt'>; // Error: 'createdAt' doesn't exist, wrong approach for unions
-
-// Error 3: Function expecting specific user type but getting broad union
-function processAdminUser(admin: AdminUser) {
+function processSpecialUser(admin: AdminUser) {
   return {
     ...admin,
     permissionCount: admin.permissions.length,
@@ -47,47 +39,42 @@ function processAdminUser(admin: AdminUser) {
   };
 }
 
-// Error 4: Trying to use Extract incorrectly
-type NonGuestUsers = Extract<User, { type: 'admin' | 'regular' }>; // Wrong syntax
+type AuthenticatedUsers = Extract<User, { type: 'admin' | 'regular' }>;
 
 interface Props {
   user: User;
-  onUpdate: (data: UserUpdateData) => void;
-  onProcessAdmin: (data: ReturnType<typeof processAdminUser>) => void;
+  onUpdate: (data: UpdateData) => void;
+  onProcess: (data: ReturnType<typeof processSpecialUser>) => void;
 }
 
-const UserProfile: React.FC<Props> = ({ user, onUpdate, onProcessAdmin }) => {
-  // Error 5: Trying to access union properties without type narrowing
-  const displayInfo: UserDisplayInfo = {
+const UserProfile: React.FC<Props> = ({ user, onUpdate, onProcess }) => {
+  const displayInfo: DisplayData = {
     name: user.name,
-    email: user.email, // Error: email doesn't exist on GuestUser consistently
+    email: user.email,
   };
 
   const handleUpdate = () => {
-    const updateData: UserUpdateData = user; // Error: User union can't be assigned to UserUpdateData
+    const updateData: UpdateData = user;
     onUpdate(updateData);
   };
 
-  const handleAdminProcess = () => {
-    // Error 6: Passing union to function expecting specific type
+  const handleProcess = () => {
     if (user.type === 'admin') {
-      const processed = processAdminUser(user); // Should work but needs proper typing
-      onProcessAdmin(processed);
+      const processed = processSpecialUser(user);
+      onProcess(processed);
     }
   };
 
-  // Error 7: Type narrowing issues in render
   return (
     <div>
       <h2>{displayInfo.name}</h2>
       <p>{displayInfo.email}</p>
       
-      {/* This should show different UI based on user type */}
       {user.type === 'admin' && (
         <div>
           <p>Permissions: {user.permissions.length}</p>
           <p>Last Login: {user.lastLogin.toISOString()}</p>
-          <button onClick={handleAdminProcess}>Process Admin</button>
+          <button onClick={handleProcess}>Process</button>
         </div>
       )}
       

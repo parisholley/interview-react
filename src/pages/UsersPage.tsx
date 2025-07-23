@@ -50,9 +50,6 @@ const UsersPage: React.FC = () => {
         </TabList>
       </TabContainer>
 
-      {/* Challenge: This ErrorBoundary looks like it should catch errors from the nested routes,
-          but it's positioned incorrectly in the component tree. Errors from tab content 
-          will bubble up to the app level instead of being caught here. */}
       <ErrorBoundary fallback={<div>Something went wrong in the users section!</div>}>
         <ContentArea>
           <Outlet />

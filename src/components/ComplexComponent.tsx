@@ -1,17 +1,11 @@
 import React, { useState } from 'react';
 
-// Challenge: Large, overly complex component that contains different useStates 
-// for multiple "child components" that haven't been decomposed and should be 
-// refactored into smaller pieces. Also has code that would benefit from useMemo.
-
-const ComplexComponent: React.FC = () => {
-  // User profile section state
+const DashboardComponent: React.FC = () => {
   const [userName, setUserName] = useState('John Doe');
   const [userAge, setUserAge] = useState(25);
   const [userEmail, setUserEmail] = useState('john@example.com');
   const [userBio, setUserBio] = useState('Software developer');
   
-  // Shopping cart section state
   const [cartItems, setCartItems] = useState([
     { id: 1, name: 'Laptop', price: 999, quantity: 1 },
     { id: 2, name: 'Mouse', price: 29, quantity: 2 }
@@ -19,19 +13,16 @@ const ComplexComponent: React.FC = () => {
   const [shippingCost, setShippingCost] = useState(15);
   const [taxRate, setTaxRate] = useState(0.08);
   
-  // Analytics dashboard section state
   const [visits, setVisits] = useState(1250);
   const [conversions, setConversions] = useState(89);
   const [revenue, setRevenue] = useState(45600);
   const [avgOrderValue, setAvgOrderValue] = useState(127);
   
-  // Settings panel section state
   const [theme, setTheme] = useState('light');
   const [notifications, setNotifications] = useState(true);
   const [autoSave, setAutoSave] = useState(false);
   const [language, setLanguage] = useState('en');
   
-  // Complex calculations that should be memoized
   const cartSubtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
   const cartTax = cartSubtotal * taxRate;
   const cartTotal = cartSubtotal + cartTax + shippingCost;
@@ -43,7 +34,6 @@ const ComplexComponent: React.FC = () => {
     <div style={{ padding: '20px', maxWidth: '1200px' }}>
       <h1>Dashboard</h1>
       
-      {/* User Profile Section - should be its own component */}
       <div style={{ border: '1px solid #ccc', padding: '15px', margin: '10px 0' }}>
         <h2>User Profile</h2>
         <div>
@@ -78,7 +68,6 @@ const ComplexComponent: React.FC = () => {
         <p>Profile: {userName}, {userAge} years old, {userEmail}</p>
       </div>
       
-      {/* Shopping Cart Section - should be its own component */}
       <div style={{ border: '1px solid #ccc', padding: '15px', margin: '10px 0' }}>
         <h2>Shopping Cart</h2>
         {cartItems.map(item => (
@@ -104,7 +93,6 @@ const ComplexComponent: React.FC = () => {
         <div><strong>Total: ${cartTotal.toFixed(2)}</strong></div>
       </div>
       
-      {/* Analytics Section - should be its own component */}
       <div style={{ border: '1px solid #ccc', padding: '15px', margin: '10px 0' }}>
         <h2>Analytics Dashboard</h2>
         <div>Visits: {visits}</div>
@@ -117,7 +105,6 @@ const ComplexComponent: React.FC = () => {
         <button onClick={() => setConversions(c => c + 5)}>Simulate Conversions</button>
       </div>
       
-      {/* Settings Section - should be its own component */}
       <div style={{ border: '1px solid #ccc', padding: '15px', margin: '10px 0' }}>
         <h2>Settings</h2>
         <div>
@@ -173,5 +160,5 @@ const ComplexComponent: React.FC = () => {
   );
 };
 
-export default ComplexComponent;
+export default DashboardComponent;
 

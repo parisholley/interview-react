@@ -1,8 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 
-// Challenge: Complex CSS interaction issue
-// The card content is not displaying correctly due to flexbox, position, and overflow interactions
 
 const Container = styled.div`
   display: flex;
@@ -47,7 +45,7 @@ const CardHeader = styled.div`
   padding: 15px;
   font-weight: bold;
   flex-shrink: 0;
-  position: absolute; /* Bug: This breaks the layout flow */
+  position: absolute;
   top: 0;
   left: 0;
   right: 0;
@@ -61,7 +59,6 @@ const CardContent = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  /* Bug: Content is hidden behind absolute positioned header */
 `;
 
 const CardFooter = styled.div`
@@ -69,7 +66,7 @@ const CardFooter = styled.div`
   padding: 10px 15px;
   border-top: 1px solid #bdc3c7;
   flex-shrink: 0;
-  position: sticky; /* Bug: Sticky doesn't work as expected within the current layout */
+  position: sticky;
   bottom: 0;
 `;
 
