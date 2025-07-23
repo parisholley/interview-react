@@ -32,14 +32,23 @@ type GuestUser = {
 
 type User = AdminUser | RegularUser | GuestUser;
 
-// Error 1: Pick from union doesn't work as expected - lacks discriminator
-type UserDisplayInfo = Pick<User, 'name' | 'email' | 'phone'>; // Error: 'phone' doesn't exist, 'email' might not exist
+// Fixed: Using Extract to get users with email property (much cleaner!)
+type AuthenticatedUser = Extract<User, { email: string }>;
 
-// Error 2: Omit from union creates issues with discriminated fields
-type UserUpdateData = Omit<User, 'id' | 'createdAt'>; // Error: 'createdAt' doesn't exist, wrong approach for unions
+// Fixed: Common properties that exist on all user types
+type UserDisplayInfo = {
+  name: string;
+  email: string;
+};
 
-// Error 3: Function expecting specific user type but getting broad union
-function processAdminUser(admin: AdminUser) {
+// Fixed: Update data type for authenticated users only
+type UserUpdateData = {
+  name: string;
+  email: string;
+};
+
+// Fixed: Function expecting specific user type
+function processAdminUser(admin: Extract<User, { type: 'admin' }>) {
   return {
     ...admin,
     permissionCount: admin.permissions.length,
@@ -47,8 +56,13 @@ function processAdminUser(admin: AdminUser) {
   };
 }
 
-// Error 4: Trying to use Extract incorrectly
-type NonGuestUsers = Extract<User, { type: 'admin' | 'regular' }>; // Wrong syntax
+// Fixed: Using Extract to filter users with email (cleaner than type-based filtering)
+type NonGuestUsers = Extract<User, { email: string }>;
+
+// Helper function to check if user is authenticated (has email) - much simpler!
+function isAuthenticatedUser(user: User): user is AuthenticatedUser {
+  return 'email' in user;
+}
 
 interface Props {
   user: User;
@@ -57,21 +71,27 @@ interface Props {
 }
 
 const UserProfile: React.FC<Props> = ({ user, onUpdate, onProcessAdmin }) => {
-  // Error 5: Trying to access union properties without type narrowing
+  // Fixed: Proper type narrowing for display info
   const displayInfo: UserDisplayInfo = {
     name: user.name,
-    email: user.email, // Error: email doesn't exist on GuestUser consistently
+    email: isAuthenticatedUser(user) ? user.email : user.tempEmail || 'N/A',
   };
 
   const handleUpdate = () => {
-    const updateData: UserUpdateData = user; // Error: User union can't be assigned to UserUpdateData
-    onUpdate(updateData);
+    // Fixed: Only allow updates for authenticated users
+    if (isAuthenticatedUser(user)) {
+      const updateData: UserUpdateData = {
+        name: user.name,
+        email: user.email
+      };
+      onUpdate(updateData);
+    }
   };
 
   const handleAdminProcess = () => {
-    // Error 6: Passing union to function expecting specific type
+    // Fixed: Proper type narrowing for admin processing
     if (user.type === 'admin') {
-      const processed = processAdminUser(user); // Should work but needs proper typing
+      const processed = processAdminUser(user); // Now properly typed
       onProcessAdmin(processed);
     }
   };

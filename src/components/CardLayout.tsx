@@ -47,21 +47,17 @@ const CardHeader = styled.div`
   padding: 15px;
   font-weight: bold;
   flex-shrink: 0;
-  position: absolute; /* Bug: This breaks the layout flow */
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 5;
+  /* Fixed: Removed absolute positioning to restore normal flow */
 `;
 
 const CardContent = styled.div`
   padding: 15px;
   flex: 1;
-  overflow-y: auto;
+  overflow: visible; /* Fixed: Changed from auto to visible */
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  /* Bug: Content is hidden behind absolute positioned header */
+  /* Fixed: Content now flows properly with header */
 `;
 
 const CardFooter = styled.div`
@@ -69,8 +65,7 @@ const CardFooter = styled.div`
   padding: 10px 15px;
   border-top: 1px solid #bdc3c7;
   flex-shrink: 0;
-  position: sticky; /* Bug: Sticky doesn't work as expected within the current layout */
-  bottom: 0;
+  /* Fixed: Removed sticky positioning for better layout flow */
 `;
 
 const CardLayout: React.FC = () => {

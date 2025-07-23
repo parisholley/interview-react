@@ -21,8 +21,12 @@ const App: React.FC = () => {
             <Route index element={<Navigate to="/dashboard" replace />} />
             <Route path="dashboard" element={<DataDashboard />} />
             
-            {/* Users section with nested routes */}
-            <Route path="users" element={<UsersPage />}>
+            {/* Users section with nested routes - Fixed: Error boundary at route level */}
+            <Route path="users" element={
+              <ErrorBoundary fallback={<div>Something went wrong in the users section!</div>}>
+                <UsersPage />
+              </ErrorBoundary>
+            }>
               <Route index element={<Navigate to="list" replace />} />
               <Route path="list" element={<UserList />} />
               <Route path="create" element={<CreateUser />} />

@@ -27,7 +27,7 @@ const DataDashboard: React.FC = () => {
       });
       setLoading(false);
     }, 1000);
-  }, [filters.dateRange, filters.category, data]); // Bug: 'data' in deps causes infinite rerenders
+  }, [filters.dateRange, filters.category]); // Fixed: Removed 'data' to prevent infinite rerenders
 
   // Another problematic effect
   useEffect(() => {
@@ -38,7 +38,7 @@ const DataDashboard: React.FC = () => {
       const processedData = data.sales.map(sale => sale * 1.1);
       console.log('Processed sales data:', processedData);
     }
-  }, [data, filters]); // Bug: Both data and filters cause unnecessary reruns
+  }, [data.sales.length]); // Fixed: Only depend on sales array length
 
   return (
     <div>
