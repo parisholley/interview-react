@@ -27,7 +27,7 @@ Fix failing tests for components that depend on global state hooks.
 
 Optimize component re-rendering caused by useEffect dependency issues.
 
-### 4. CSS Layout Issues
+### 4. CSS Layout Issues (SKIP FOR NOW)
 **File:** `src/components/CardLayout.tsx`
 
 Fix layout problems caused by interactions between CSS properties.
