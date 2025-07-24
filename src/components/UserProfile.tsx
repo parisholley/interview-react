@@ -1,9 +1,5 @@
 import React from 'react';
 
-// Challenge: Complex TypeScript compilation errors involving discriminated unions,
-// Pick/Omit utility types, and Extract for union filtering
-
-// Discriminated union types for different user types
 type AdminUser = {
   type: 'admin';
   id: number;
@@ -32,23 +28,10 @@ type GuestUser = {
 
 type User = AdminUser | RegularUser | GuestUser;
 
-// Fixed: Using Extract to get users with email property (much cleaner!)
-type AuthenticatedUser = Extract<User, { email: string }>;
+type DisplayData = Pick<User, 'name' | 'email' | 'phone'>;
+type UpdateData = Omit<User, 'id' | 'createdAt'>;
 
-// Fixed: Common properties that exist on all user types
-type UserDisplayInfo = {
-  name: string;
-  email: string;
-};
-
-// Fixed: Update data type for authenticated users only
-type UserUpdateData = {
-  name: string;
-  email: string;
-};
-
-// Fixed: Function expecting specific user type
-function processAdminUser(admin: Extract<User, { type: 'admin' }>) {
+function processSpecialUser(admin: AdminUser) {
   return {
     ...admin,
     permissionCount: admin.permissions.length,
@@ -56,55 +39,42 @@ function processAdminUser(admin: Extract<User, { type: 'admin' }>) {
   };
 }
 
-// Helper function to check if user is authenticated (has email) - much simpler!
-function isAuthenticatedUser(user: User): user is AuthenticatedUser {
-  return 'email' in user;
-}
+type AuthenticatedUsers = Extract<User, { type: 'admin' | 'regular' }>;
 
 interface Props {
   user: User;
-  onUpdate: (data: UserUpdateData) => void;
-  onProcess: (data: ReturnType<typeof processAdminUser>) => void;
+  onUpdate: (data: UpdateData) => void;
+  onProcess: (data: ReturnType<typeof processSpecialUser>) => void;
 }
 
 const UserProfile: React.FC<Props> = ({ user, onUpdate, onProcess }) => {
-  // Fixed: Proper type narrowing for display info
-  const displayInfo: UserDisplayInfo = {
+  const displayInfo: DisplayData = {
     name: user.name,
-    email: isAuthenticatedUser(user) ? user.email : user.tempEmail || 'N/A',
+    email: user.email,
   };
 
   const handleUpdate = () => {
-    // Fixed: Only allow updates for authenticated users
-    if (isAuthenticatedUser(user)) {
-      const updateData: UserUpdateData = {
-        name: user.name,
-        email: user.email
-      };
-      onUpdate(updateData);
-    }
+    const updateData: UpdateData = user;
+    onUpdate(updateData);
   };
 
-  const handleAdminProcess = () => {
-    // Fixed: Proper type narrowing for admin processing
+  const handleProcess = () => {
     if (user.type === 'admin') {
-      const processed = processAdminUser(user); // Now properly typed
+      const processed = processSpecialUser(user);
       onProcess(processed);
     }
   };
 
-  // Error 7: Type narrowing issues in render
   return (
       <div>
         <h2>{displayInfo.name}</h2>
         <p>{displayInfo.email}</p>
 
-        {/* This should show different UI based on user type */}
         {user.type === 'admin' && (
             <div>
               <p>Permissions: {user.permissions.length}</p>
               <p>Last Login: {user.lastLogin.toISOString()}</p>
-              <button onClick={handleAdminProcess}>Process Admin</button>
+              <button onClick={handleProcess}>Process</button>
             </div>
         )}
 
