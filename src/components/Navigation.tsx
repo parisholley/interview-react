@@ -35,17 +35,27 @@ const Navigation: React.FC = () => {
       <NavList>
         <NavItem>
           <NavLink to="/dashboard" $active={location.pathname === '/dashboard'}>
-            Dashboard
+            Challenge 3
           </NavLink>
         </NavItem>
         <NavItem>
           <NavLink to="/users" $active={location.pathname.startsWith('/users')}>
-            Users
+            Challenge 6
           </NavLink>
         </NavItem>
         <NavItem>
-          <NavLink to="/reports" $active={location.pathname.startsWith('/reports')}>
-            Reports
+          <NavLink to="challenges/css" $active={location.pathname.startsWith('challenges/css')}>
+            Challenge 4
+          </NavLink>
+        </NavItem>
+        <NavItem>
+          <NavLink to="challenges/observer" $active={location.pathname.startsWith('challenges/observer')}>
+            Challenge 5
+          </NavLink>
+        </NavItem>
+        <NavItem>
+          <NavLink to="challenges/complex" $active={location.pathname.startsWith('challenges/complex')}>
+            Challenge 7
           </NavLink>
         </NavItem>
       </NavList>
