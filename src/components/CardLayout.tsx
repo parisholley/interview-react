@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
-// CHALLENGE: Fix the flex layout and modal stacking issues
+// SOLUTIONS: Fixed flex layout and modal stacking issues
 
 const Container = styled.div`
   display: flex;
@@ -43,7 +43,8 @@ const Card = styled.div`
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
     transform: scale(1.05);
-    z-index: 1000;
+    /* SOLUTION 1: Removed z-index to prevent stacking context issues */
+    /* z-index: 1000; */
   }
 `;
 
@@ -60,19 +61,20 @@ const TagContainer = styled.div`
   gap: 10px;
   margin-top: 15px;
   
-  /* Tags should be equal width but there's a flex issue */
+  /* SOLUTION 2: All tags now have equal flex values for even distribution */
   & > span {
     flex: 1;
     text-align: center;
   }
   
-  & > span:first-child {
+  /* REMOVED: These were causing uneven tag widths */
+  /* & > span:first-child {
     flex: 3;
   }
   
   & > span:last-child {
     flex: 0.5;
-  }
+  } */
 `;
 const Tag = styled.span`
   background: #ecf0f1;
@@ -92,7 +94,8 @@ const Modal = styled.div<{ show: boolean }>`
   padding: 30px;
   border-radius: 8px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-  z-index: ${props => props.show ? '500' : '-1'};
+  /* SOLUTION 1: Increased z-index to ensure modal appears above all cards */
+  z-index: ${props => props.show ? '1500' : '-1'};
   opacity: ${props => props.show ? '1' : '0'};
   min-width: 300px;
 `;
@@ -104,7 +107,8 @@ const Backdrop = styled.div<{ show: boolean }>`
   right: 0;
   bottom: 0;
   background: rgba(0, 0, 0, 0.5);
-  z-index: ${props => props.show ? '400' : '-1'};
+  /* SOLUTION 1: Increased backdrop z-index to match modal hierarchy */
+  z-index: ${props => props.show ? '1400' : '-1'};
   opacity: ${props => props.show ? '1' : '0'};
 `;
 
