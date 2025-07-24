@@ -1,4 +1,4 @@
-import { useState, createContext, useContext } from 'react';
+import { createContext, useContext } from 'react';
 
 type AdminUser = {
   type: 'admin';
@@ -49,11 +49,11 @@ export const useGlobalState = () => {
 
 export const useLoggedInUser = () => {
   const { state } = useGlobalState();
-  
+
   if (!state.isAuthenticated || !state.currentUser) {
     return null;
   }
-  
+
   return state.currentUser;
 };
 
