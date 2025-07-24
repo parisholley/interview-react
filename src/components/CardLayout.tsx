@@ -45,7 +45,8 @@ const Card = styled.div`
     transform: scale(1.05);
     /* SOLUTION 1: Removed z-index to prevent stacking context issues */
     /* z-index: 1000; */
-      
+
+      /* SOLUTION 3: Override */
       span {
           color: black;
       }
