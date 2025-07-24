@@ -1,21 +1,25 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 
+// CHALLENGE: Fix the flex layout and modal stacking issues
 
 const Container = styled.div`
   display: flex;
   flex-direction: column;
   height: 100vh;
   padding: 20px;
-  box-sizing: border-box;
+  background: #f8f9fa;
 `;
 
 const Header = styled.div`
-  background: #f0f0f0;
+  background: white;
   padding: 20px;
-  flex-shrink: 0;
-  position: relative;
-  z-index: 10;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 `;
 
 const CardGrid = styled.div`
@@ -23,84 +27,168 @@ const CardGrid = styled.div`
   flex-wrap: wrap;
   gap: 20px;
   flex: 1;
-  overflow-y: auto;
-  position: relative;
 `;
 
 const Card = styled.div`
-  width: 300px;
-  height: 200px;
   background: white;
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  position: relative;
   display: flex;
   flex-direction: column;
-  position: relative;
-  overflow: hidden;
-`;
-
-const CardHeader = styled.div`
-  background: #3498db;
-  color: white;
-  padding: 15px;
-  font-weight: bold;
-  flex-shrink: 0;
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 5;
+  min-height: 200px;
+  flex: 1 1 300px;
+  
+  &:first-child {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    transform: scale(1.05);
+    z-index: 1000;
+  }
 `;
 
 const CardContent = styled.div`
-  padding: 15px;
+  padding: 20px;
   flex: 1;
-  overflow-y: auto;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 `;
 
-const CardFooter = styled.div`
+const TagContainer = styled.div`
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+  
+  /* Tags should be equal width but there's a flex issue */
+  & > span {
+    flex: 1;
+    text-align: center;
+  }
+  
+  & > span:first-child {
+    flex: 3;
+  }
+  
+  & > span:last-child {
+    flex: 0.5;
+  }
+`;
+const Tag = styled.span`
   background: #ecf0f1;
-  padding: 10px 15px;
-  border-top: 1px solid #bdc3c7;
-  flex-shrink: 0;
-  position: sticky;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 12px;
+  white-space: nowrap;
+  /* No explicit color set - relies on cascade */
+`;
+
+const Modal = styled.div<{ show: boolean }>`
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  z-index: ${props => props.show ? '500' : '-1'};
+  opacity: ${props => props.show ? '1' : '0'};
+  min-width: 300px;
+`;
+
+const Backdrop = styled.div<{ show: boolean }>`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
   bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: ${props => props.show ? '400' : '-1'};
+  opacity: ${props => props.show ? '1' : '0'};
 `;
 
 const CardLayout: React.FC = () => {
-  const cards = Array.from({ length: 12 }, (_, i) => ({
+  const [showModal, setShowModal] = useState(false);
+
+  const cards = Array.from({ length: 3 }, (_, i) => ({
     id: i + 1,
-    title: `Card ${i + 1}`,
-    content: `This is some content for card ${i + 1}. It should be visible and properly positioned within the card layout. The text might be longer to test overflow behavior.`,
-    status: i % 3 === 0 ? 'Active' : i % 3 === 1 ? 'Pending' : 'Inactive'
+    title: `Project ${i + 1}`,
+    content: `This is project ${i + 1} description. ${i === 0 ? 'This is the featured project.' : 'A regular project card.'}`,
+    tags: ['Frontend', 'Backend', 'Testing']
   }));
 
   return (
     <Container>
       <Header>
-        <h1>Card Dashboard</h1>
-        <p>Manage your cards below</p>
+        <h1 style={{ margin: 0, fontSize: '24px' }}>Project Dashboard</h1>
+        <button
+          onClick={() => setShowModal(true)}
+          style={{
+            background: '#3498db',
+            color: 'white',
+            border: 'none',
+            padding: '10px 20px',
+            borderRadius: '4px',
+            cursor: 'pointer'
+          }}
+        >
+          Add Project
+        </button>
       </Header>
+
       <CardGrid>
         {cards.map(card => (
           <Card key={card.id}>
-            <CardHeader>
-              {card.title}
-            </CardHeader>
             <CardContent>
-              <div>
-                <p>{card.content}</p>
-              </div>
+              <h3 style={{ margin: '0 0 10px 0' }}>{card.title}</h3>
+              <p style={{ margin: '0 0 15px 0', fontSize: '14px', lineHeight: '1.5' }}>
+                {card.content}
+              </p>
+
+              <TagContainer>
+                {card.tags.map(tag => (
+                  <Tag key={tag}>{tag}</Tag>
+                ))}
+              </TagContainer>
             </CardContent>
-            <CardFooter>
-              Status: {card.status}
-            </CardFooter>
           </Card>
         ))}
       </CardGrid>
+
+      <Backdrop show={showModal} onClick={() => setShowModal(false)} />
+      <Modal show={showModal}>
+        <h3 style={{ margin: '0 0 15px 0' }}>Add New Project</h3>
+        <p style={{ margin: '0 0 20px 0' }}>This modal should appear above all cards.</p>
+        <div style={{ display: 'flex', gap: '10px', justifyContent: 'flex-end' }}>
+          <button
+            onClick={() => setShowModal(false)}
+            style={{
+              background: '#95a5a6',
+              color: 'white',
+              border: 'none',
+              padding: '8px 16px',
+              borderRadius: '4px',
+              cursor: 'pointer'
+            }}
+          >
+            Cancel
+          </button>
+          <button
+            onClick={() => setShowModal(false)}
+            style={{
+              background: '#27ae60',
+              color: 'white',
+              border: 'none',
+              padding: '8px 16px',
+              borderRadius: '4px',
+              cursor: 'pointer'
+            }}
+          >
+            Create
+          </button>
+        </div>
+      </Modal>
     </Container>
   );
 };

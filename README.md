@@ -27,10 +27,13 @@ Fix failing tests for components that depend on global state hooks.
 
 Optimize component re-rendering caused by useEffect dependency issues.
 
-### 4. CSS Layout Issues (SKIP FOR NOW)
+### 4. CSS Layout Challenge
 **File:** `src/components/CardLayout.tsx`
 
-Fix layout problems caused by interactions between CSS properties.
+Debug 2 focused CSS issues in a project dashboard:
+- **Stacking Context Problem**: Modal appears behind the first card
+- **Flex Layout Issue**: The cards aren't evenly sized
+- **White Text**: The purple card tags should have black text
 
 ### 5. Intersection Observer
 **File:** `src/components/ObserverComponent.tsx`
