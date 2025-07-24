@@ -56,9 +56,6 @@ function processAdminUser(admin: Extract<User, { type: 'admin' }>) {
   };
 }
 
-// Fixed: Using Extract to filter users with email (cleaner than type-based filtering)
-type NonGuestUsers = Extract<User, { email: string }>;
-
 // Helper function to check if user is authenticated (has email) - much simpler!
 function isAuthenticatedUser(user: User): user is AuthenticatedUser {
   return 'email' in user;
@@ -101,7 +98,7 @@ const UserProfile: React.FC<Props> = ({ user, onUpdate, onProcessAdmin }) => {
     <div>
       <h2>{displayInfo.name}</h2>
       <p>{displayInfo.email}</p>
-      
+
       {/* This should show different UI based on user type */}
       {user.type === 'admin' && (
         <div>
@@ -110,21 +107,21 @@ const UserProfile: React.FC<Props> = ({ user, onUpdate, onProcessAdmin }) => {
           <button onClick={handleAdminProcess}>Process Admin</button>
         </div>
       )}
-      
+
       {user.type === 'regular' && (
         <div>
           <p>Subscription: {user.subscriptionTier}</p>
           <p>Usage: {user.usageCount}</p>
         </div>
       )}
-      
+
       {user.type === 'guest' && (
         <div>
           <p>Session: {user.sessionId}</p>
           <p>Expires: {user.expiresAt.toISOString()}</p>
         </div>
       )}
-      
+
       <button onClick={handleUpdate}>Update Profile</button>
     </div>
   );

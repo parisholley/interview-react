@@ -4,7 +4,6 @@ const UserReports: React.FC = () => {
   const [shouldError, setShouldError] = useState(false);
 
   if (shouldError) {
-    // This error should be caught by the ErrorBoundary in UsersPage, but it won't be
     throw new Error('User reports failed to load!');
   }
 
@@ -23,7 +22,7 @@ const UserReports: React.FC = () => {
           borderRadius: '4px' 
         }}
       >
-        Trigger Error (should be caught by users section)
+Trigger Error
       </button>
       
       <div style={{ marginTop: '20px' }}>

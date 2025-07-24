@@ -13,12 +13,10 @@ const DataDashboard: React.FC = () => {
   const [filters, setFilters] = useState({ dateRange: '30d', category: 'all' });
   const [loading, setLoading] = useState(false);
 
-  // Challenge: This useEffect has dependency issues causing extra renders
   useEffect(() => {
     console.log('Dashboard effect running - fetching data');
     setLoading(true);
-    
-    // Simulate API call
+
     setTimeout(() => {
       setData({
         sales: [100, 200, 150, 300],
@@ -29,12 +27,9 @@ const DataDashboard: React.FC = () => {
     }, 1000);
   }, [filters.dateRange, filters.category]); // Fixed: Removed 'data' to prevent infinite rerenders
 
-  // Another problematic effect
   useEffect(() => {
     console.log('Data processing effect running');
-    // This effect processes data but has the wrong dependencies
     if (data.sales.length > 0) {
-      // Some data processing logic
       const processedData = data.sales.map(sale => sale * 1.1);
       console.log('Processed sales data:', processedData);
     }

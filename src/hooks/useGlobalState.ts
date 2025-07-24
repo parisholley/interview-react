@@ -1,6 +1,5 @@
-import { useState, createContext, useContext } from 'react';
+import { createContext, useContext } from 'react';
 
-// User types from the TypeScript challenge
 type AdminUser = {
   type: 'admin';
   id: number;
@@ -48,14 +47,13 @@ export const useGlobalState = () => {
   return context;
 };
 
-// Hook that depends on global state - this is what should be mocked in tests
 export const useLoggedInUser = () => {
   const { state } = useGlobalState();
-  
+
   if (!state.isAuthenticated || !state.currentUser) {
     return null;
   }
-  
+
   return state.currentUser;
 };
 

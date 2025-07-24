@@ -1,7 +1,6 @@
 import React from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
-import ErrorBoundary from '../components/ErrorBoundary';
 
 const TabContainer = styled.div`
   border-bottom: 2px solid #ecf0f1;
@@ -35,7 +34,7 @@ const UsersPage: React.FC = () => {
   return (
     <div>
       <h1>Users Management</h1>
-      
+
       <TabContainer>
         <TabList>
           <Tab to="/users/list" $active={location.pathname === '/users/list'}>
@@ -50,14 +49,9 @@ const UsersPage: React.FC = () => {
         </TabList>
       </TabContainer>
 
-      {/* Challenge: This ErrorBoundary looks like it should catch errors from the nested routes,
-          but it's positioned incorrectly in the component tree. Errors from tab content 
-          will bubble up to the app level instead of being caught here. */}
-      <ErrorBoundary fallback={<div>Something went wrong in the users section!</div>}>
         <ContentArea>
           <Outlet />
         </ContentArea>
-      </ErrorBoundary>
     </div>
   );
 };

@@ -3,7 +3,7 @@ import { useLoggedInUser } from '../hooks/useGlobalState';
 
 const UserWelcome: React.FC = () => {
   const [showWelcome, setShowWelcome] = useState(false);
-  const currentUser = useLoggedInUser(); // This will throw if no global state provider
+  const currentUser = useLoggedInUser();
 
   const handleShowWelcome = () => {
     setShowWelcome(true);
