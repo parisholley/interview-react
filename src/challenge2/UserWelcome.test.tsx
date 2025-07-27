@@ -1,9 +1,6 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
-import UserWelcome from '../components/UserWelcome';
-
-// Test the UserWelcome component
-// This component relies on useLoggedInUser, which needs to be mocked for testing
+import UserWelcome from './UserWelcome';
 
 describe('UserWelcome', () => {
   it('should show welcome message when button is clicked and user is logged in', () => {

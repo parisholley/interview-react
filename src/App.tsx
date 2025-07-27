@@ -1,15 +1,15 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import AppLayout from './components/AppLayout';
-import UsersPage from './pages/UsersPage';
-import UserList from './pages/UserList';
-import CreateUser from './pages/CreateUser';
-import UserReports from './pages/UserReports';
-import DataDashboard from './components/DataDashboard';
-import CardLayout from './components/CardLayout';
-import ObserverComponent from './components/ObserverComponent';
-import DashboardComponent from './components/ComplexComponent';
+import DataDashboard from './challenge3/DataDashboard';
+import CardLayout from './challenge4/CardLayout';
 import ErrorBoundary from './components/ErrorBoundary';
+import UsersPage from "./challenge6/UsersPage";
+import UserReports from "./challenge6/UserReports";
+import ObserverComponent from "./challenge5/ObserverComponent";
+import DashboardComponent from "./challenge7/ComplexComponent";
+import UserList from "./challenge6/UserList";
+import CreateUser from "./challenge6/CreateUser";
 
 const App: React.FC = () => {
   return (

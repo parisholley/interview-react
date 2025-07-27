@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
-// CHALLENGE: Fix the flex layout and modal stacking issues
-
 const Container = styled.div`
   display: flex;
   flex-direction: column;
