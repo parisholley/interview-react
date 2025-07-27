@@ -8,7 +8,8 @@ TypeScript, CSS, Jest testing, useEffect hooks, component architecture, and Reac
 * You are NOT allowed to use AI-assistance (directly or via search engines). We recommend using DuckDuckGo.com for searching or add `-AI` (minus A I) to the end of your google queries).
 * You are allowed and encouraged to read documentation on various languages, libraries, and frameworks in order to solve the challenges.
 * The interviewer will answer any questions you have or provide hints on request but if you are stuck, you should skip the challenge and try another.
-
+* Challenges should be done (or skipped) in order.
+* 
 ## Setup
 
 ```bash
