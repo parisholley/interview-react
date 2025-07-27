@@ -13,9 +13,13 @@ npm test
 ## Challenges
 
 ### 1. TypeScript Issues
-**File:** `src/components/UserProfile.tsx`
+**Files:** `src/challenge1/service.ts`, `src/challenge1/UserDisplay.tsx`
 
-Resolve TypeScript compilation errors related to utility types and discriminated unions.
+Resolve TypeScript compilation errors which can be reproduced by running:
+
+```shell
+npm run build
+```
 
 ### 2. Testing Problems
 **Files:** `src/tests/UserWelcome.test.tsx`, `src/components/UserWelcome.tsx`
